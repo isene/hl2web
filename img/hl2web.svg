@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="100%" style="stop-color:#0a0a14"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="248" height="248" rx="28" fill="url(#bg)"
+        stroke="#b7410e" stroke-width="4"/>
+  <!-- a HyperList tree becoming a page -->
+  <g stroke-linecap="round" stroke-width="10">
+    <line x1="48" y1="64"  x2="150" y2="64"  stroke="#4a8dff"/>
+    <line x1="72" y1="100" x2="190" y2="100" stroke="#d8d8d8"/>
+    <line x1="96" y1="136" x2="170" y2="136" stroke="#33cc55"/>
+    <line x1="96" y1="172" x2="200" y2="172" stroke="#d8d8d8"/>
+    <line x1="72" y1="208" x2="160" y2="208" stroke="#ff4444"/>
+  </g>
+  <g fill="#d75fff">
+    <path d="M30 52 l16 12 -16 12 z"/>
+    <path d="M54 88 l16 12 -16 12 z"/>
+    <path d="M54 196 l16 12 -16 12 z"/>
+  </g>
+  <circle cx="86" cy="142" r="7" fill="#d75fff"/>
+  <circle cx="86" cy="178" r="7" fill="#d75fff"/>
+</svg>

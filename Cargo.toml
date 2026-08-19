@@ -1,0 +1,13 @@
+[package]
+name = "hl2web"
+version = "0.1.0"
+edition = "2021"
+authors = ["Geir Isene <g@isene.com>"]
+description = "Render a HyperList (.hl) as one self-contained interactive HTML page: folding, search, colors per hyperlist.vim."
+license = "Unlicense"
+repository = "https://github.com/isene/hl2web"
+
+[profile.release]
+opt-level = 3
+lto = true
+strip = true
