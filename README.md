@@ -59,7 +59,8 @@ hl2web --graph "-t -d -T tech" file.hl > file.html
 
 ## What the page gives you
 
-- Native folding: click any parent, or the 1/2/3/4/all/none buttons
+- Native folding: click any parent, or the 1/2/3/4/all/none buttons;
+  the page opens collapsed to the top level
 - Live search: matching items highlight, ancestors unfold, rest hides
 - hyperlist.vim colors: Operators blue, Properties red, Qualifiers
   green, Starters and references magenta, comments and quotes teal,

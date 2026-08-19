@@ -72,7 +72,7 @@ body.light .kids { border-left-color: #e2ded2; }
 ";
 
 const JS: &str = "
-function level(n){document.querySelectorAll('details').forEach(d=>{
+function level(n){document.querySelectorAll('details.node').forEach(d=>{
   d.open = (n<0)||(parseInt(d.dataset.l)<n);});}
 function cb(ev,el){ev.preventDefault();ev.stopPropagation();
   var t=el.textContent;
@@ -586,7 +586,7 @@ fn main() {
         if has_kids {
             let _ = write!(
                 body,
-                "<details class=node open data-l={} data-t=\"{}\" id=i{}>\
+                "<details class=node data-l={} data-t=\"{}\" id=i{}>\
                  <summary>{}</summary><div class=kids>",
                 it.level, esc(&plain), i, line
             );
