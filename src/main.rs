@@ -55,11 +55,35 @@ a.ref { text-decoration: underline; }
 .hit > summary, .hit.item { background: var(--hit); }
 footer { color: var(--dim); margin-top: 2em; font-size: .8em; }
 b { font-weight: bold; } i { font-style: italic; } u { text-decoration: underline; }
+.cb { cursor: pointer; }
+body.light {
+  --bg: #fbfaf6; --fg: #222; --dim: #999;
+  --op: #0044cc; --prop: #c00000; --qual: #0a7a33;
+  --start: #a000a0; --ref: #a000a0; --cmt: #007a7a;
+  --tag: #7a6000; --hit: #ece8cf;
+}
+body.light header { border-bottom-color: #ddd; }
+body.light header input, body.light header button {
+  background: #f0eee6; border-color: #ccc; }
+body.light .kids { border-left-color: #e2ded2; }
 ";
 
 const JS: &str = "
 function level(n){document.querySelectorAll('details').forEach(d=>{
   d.open = (n<0)||(parseInt(d.dataset.l)<n);});}
+function cb(ev,el){ev.preventDefault();ev.stopPropagation();
+  var t=el.textContent;
+  el.textContent = t.indexOf('\\u2610')>=0 ? '\\u2611 ' : '\\u2610 ';}
+function go(id){var e=document.getElementById(id);if(!e)return;
+  var p=e.parentElement;
+  while(p&&p.id!=='root'){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}
+  e.scrollIntoView({block:'center'});
+  e.classList.add('hit');setTimeout(function(){e.classList.remove('hit');},1500);}
+function theme(){document.body.classList.toggle('light');
+  try{localStorage.setItem('hl2web-theme',
+    document.body.classList.contains('light')?'light':'dark');}catch(e){}}
+try{if(localStorage.getItem('hl2web-theme')==='light')
+  document.body.classList.add('light');}catch(e){}
 function search(q){
   q=q.toLowerCase();
   document.querySelectorAll('.node').forEach(e=>{
@@ -109,7 +133,8 @@ fn parse(src: &str) -> Vec<Item> {
             }
         }
         // A lone backslash toggles a literal block: verbatim until the
-        // closing backslash at the same level.
+        // closing backslash at the same level. The delimiter lines stay
+        // visible, one at the top and one at the bottom of the block.
         if rest == "\\" {
             if lit && level == lit_level {
                 lit = false;
@@ -117,6 +142,7 @@ fn parse(src: &str) -> Vec<Item> {
                 lit = true;
                 lit_level = level;
             }
+            out.push(Item { level, text: "\\".into(), literal: true });
             continue;
         }
         out.push(Item {
@@ -150,11 +176,16 @@ fn head(text: &str) -> (String, String) {
         let _ = write!(out, "<span class=start>{} </span>", esc(&rest[..1]));
         rest = r;
     } else {
+        // Identifier: digits and dots then a space — "1.2.3 " AND the
+        // bare "2 " both count, per hyperlist.vim's HLident.
         let ident: String = rest
             .chars()
             .take_while(|c| c.is_ascii_digit() || *c == '.')
             .collect();
-        if ident.contains('.') && rest[ident.len()..].starts_with(' ') {
+        if !ident.is_empty()
+            && ident.chars().any(|c| c.is_ascii_digit())
+            && rest[ident.len()..].starts_with(' ')
+        {
             let _ = write!(out, "<span class=start>{}</span>", esc(&ident));
             rest = &rest[ident.len()..];
         }
@@ -169,11 +200,13 @@ fn head(text: &str) -> (String, String) {
         }
     }
 
-    // Checkbox qualifier at the head.
+    // Checkbox qualifier at the head; clicking toggles it on the page.
     for (m, sym) in [("[_] ", "☐ "), ("[ ] ", "☐ "), ("[x] ", "☑ "),
                      ("[X] ", "☑ "), ("[O] ", "◔ ")] {
         if let Some(r) = rest.strip_prefix(m) {
-            let _ = write!(out, "<span class=qual>{}</span>", sym);
+            let _ = write!(out,
+                "<span class=\"qual cb\" onclick=\"cb(event,this)\">{}</span>",
+                sym);
             rest = r;
             break;
         }
@@ -219,9 +252,34 @@ fn head(text: &str) -> (String, String) {
     (out, rest.to_string())
 }
 
+/// A `<reference>` as HTML: URLs and file: refs open externally; an
+/// item-path ref links to the first item containing its last segment
+/// (never the referencing item itself); unresolved refs stay a span.
+fn ref_html(inner: &str, self_ix: usize, texts: &[String]) -> String {
+    if inner.starts_with("http://") || inner.starts_with("https://")
+        || inner.starts_with("file:")
+    {
+        let href = inner.strip_prefix("file:").unwrap_or(inner);
+        return format!("<a class=ref href=\"{}\">&lt;{}&gt;</a>",
+                       esc(href), esc(inner));
+    }
+    let seg = inner.rsplit('/').next().unwrap_or(inner).trim().to_lowercase();
+    if !seg.is_empty() {
+        if let Some(ix) = texts.iter().enumerate().position(|(i, t)| {
+            i != self_ix && t.contains(&seg)
+        }) {
+            return format!(
+                "<a class=ref href=\"#i{ix}\" \
+                 onclick=\"go('i{ix}');return false\">&lt;{}&gt;</a>",
+                esc(inner));
+        }
+    }
+    format!("<span class=ref>&lt;{}&gt;</span>", esc(inner))
+}
+
 /// Inline elements over the remainder: qualifiers, refs, comments,
 /// quotes, hashtags, keywords, markup.
-fn inline(s: &str) -> String {
+fn inline(s: &str, self_ix: usize, texts: &[String]) -> String {
     let mut out = String::new();
     let b: Vec<char> = s.chars().collect();
     let n = b.len();
@@ -241,20 +299,22 @@ fn inline(s: &str) -> String {
             continue;
         }
         if let Some(j) = pair('<', '>') {
-            let body: String = b[i..=j].iter().collect();
-            let _ = write!(out, "<span class=ref>{}</span>", esc(&body));
+            let body: String = b[i + 1..j].iter().collect();
+            out.push_str(&ref_html(&body, self_ix, texts));
             i = j + 1;
             continue;
         }
         if let Some(j) = pair('(', ')') {
             let body: String = b[i..=j].iter().collect();
-            let _ = write!(out, "<span class=cmt>{}</span>", inline_min(&body));
+            let _ = write!(out, "<span class=cmt>{}</span>",
+                           inline_min(&body, self_ix, texts));
             i = j + 1;
             continue;
         }
         if let Some(j) = pair('"', '"') {
             let body: String = b[i..=j].iter().collect();
-            let _ = write!(out, "<span class=cmt>{}</span>", inline_min(&body));
+            let _ = write!(out, "<span class=cmt>{}</span>",
+                           inline_min(&body, self_ix, texts));
             i = j + 1;
             continue;
         }
@@ -317,14 +377,13 @@ fn inline(s: &str) -> String {
 }
 
 /// Comments and quotes stay one color; only refs light up inside them.
-fn inline_min(s: &str) -> String {
+fn inline_min(s: &str, self_ix: usize, texts: &[String]) -> String {
     let mut out = String::new();
     let mut rest = s;
     while let Some(a) = rest.find('<') {
         if let Some(b) = rest[a..].find('>') {
             out.push_str(&esc(&rest[..a]));
-            let _ = write!(out, "<span class=ref>{}</span>",
-                           esc(&rest[a..a + b + 1]));
+            out.push_str(&ref_html(&rest[a + 1..a + b], self_ix, texts));
             rest = &rest[a + b + 1..];
         } else {
             break;
@@ -334,12 +393,12 @@ fn inline_min(s: &str) -> String {
     out
 }
 
-fn render_line(it: &Item) -> String {
+fn render_line(it: &Item, self_ix: usize, texts: &[String]) -> String {
     if it.literal {
         return format!("<span class=lit>{}</span>", esc(&it.text));
     }
     let (h, rest) = head(&it.text);
-    format!("{}{}", h, inline(&rest))
+    format!("{}{}", h, inline(&rest, self_ix, texts))
 }
 
 fn main() {
@@ -380,6 +439,8 @@ fn main() {
             .unwrap_or_else(|| "HyperList".into());
     }
 
+    // Lowercased item texts, the reference-resolution targets.
+    let texts: Vec<String> = items.iter().map(|it| it.text.to_lowercase()).collect();
     let mut body = String::new();
     let mut stack: Vec<usize> = Vec::new(); // open <details> levels
     for (i, it) in items.iter().enumerate() {
@@ -395,7 +456,7 @@ fn main() {
                 break;
             }
         }
-        let line = render_line(it);
+        let line = render_line(it, i, &texts);
         let plain = it.text.replace('"', "&quot;");
         if has_kids {
             let _ = write!(
@@ -426,6 +487,7 @@ fn main() {
          <button onclick=level(1)>1</button><button onclick=level(2)>2</button>\
          <button onclick=level(3)>3</button><button onclick=level(4)>4</button>\
          <button onclick=level(-1)>all</button><button onclick=level(0)>none</button>\
+         <button onclick=theme() title=\"light / dark\">☾☀</button>\
          </header><div id=root>{body}</div>\
          <footer>rendered by hl2web {v} — <a class=ref \
          href=\"https://isene.org/hyperlist/\">HyperList</a></footer>\
