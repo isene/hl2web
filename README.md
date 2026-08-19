@@ -23,10 +23,15 @@ becomes an explorable argument: fold a route, follow a cross-reference
 from one paper's claim to the other's theorem, search for an objection.
 
 ```sh
-hl2web --title "TEG" examples/TEG.hl > TEG.html
+hl2web --title "TEG" --graph examples/TEG.hl > TEG.html
 ```
 
 See it live: [isene.com/freewill/TEG.html](https://isene.com/freewill/TEG.html)
+
+With `--graph` the page ends in a
+[hypergraph](https://github.com/isene/hypergraph) rendering of the list:
+
+![TEG as a hypergraph](img/TEG-graph.png)
 
 ## Usage
 
