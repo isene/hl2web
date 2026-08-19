@@ -14,6 +14,18 @@ real thing: folding, search, and the colors you know from hyperlist.vim.
 
 <br clear="left"/>
 
+## The prime example: TEG
+
+`examples/TEG.hl` maps the Trans-Existential Grounding framework, the
+argument of two papers ([isene.com/freewill](https://isene.com/freewill/)):
+existence cannot ground itself, and the ground must choose. Rendered, it
+becomes an explorable argument: fold a route, follow a cross-reference
+from one paper's claim to the other's theorem, search for an objection.
+
+```sh
+hl2web --title "TEG" examples/TEG.hl > TEG.html
+```
+
 ## Usage
 
 ```sh
