@@ -191,10 +191,10 @@ fn head(text: &str) -> (String, String) {
         }
     }
 
-    // State / Transition markers.
-    for (m, cls) in [("S: ", "cmt"), ("T: ", "cmt"), ("| ", "cmt"), ("/ ", "cmt")] {
+    // State / Transition markers are Operators per the spec: blue.
+    for m in ["S: ", "T: ", "| ", "/ "] {
         if let Some(r) = rest.strip_prefix(m) {
-            let _ = write!(out, "<span class={}>{}</span>", cls, esc(m));
+            let _ = write!(out, "<span class=op>{}</span>", esc(m));
             rest = r;
             break;
         }
@@ -227,7 +227,7 @@ fn head(text: &str) -> (String, String) {
         }
     }
     if seen >= 2 && rest[i..].starts_with(':') {
-        let _ = write!(out, "<span class=op>{}:</span>", esc(&rest[..i]));
+        out.push_str(&colon_head_html(&format!("{}:", &rest[..i]), "op"));
         return (out, rest[i + 1..].to_string());
     }
     let mut i = 0;
@@ -246,10 +246,27 @@ fn head(text: &str) -> (String, String) {
     if seen >= 2 && rest[i..].starts_with(':')
         && (rest[i + 1..].is_empty() || rest[i + 1..].starts_with(' '))
     {
-        let _ = write!(out, "<span class=prop>{}:</span>", esc(&rest[..i]));
+        out.push_str(&colon_head_html(&format!("{}:", &rest[..i]), "prop"));
         return (out, rest[i + 1..].to_string());
     }
     (out, rest.to_string())
+}
+
+/// An Operator/Property head with any parenthesized comment inside kept
+/// teal, per hyperlist.vim's `contains=HLcomment` on both rules.
+fn colon_head_html(text: &str, cls: &str) -> String {
+    let mut out = format!("<span class={}>", cls);
+    let mut rest = text;
+    while let Some(a) = rest.find('(') {
+        let Some(b) = rest[a..].find(')') else { break };
+        out.push_str(&esc(&rest[..a]));
+        let _ = write!(out, "<span class=cmt>{}</span>",
+                       esc(&rest[a..a + b + 1]));
+        rest = &rest[a + b + 1..];
+    }
+    out.push_str(&esc(rest));
+    out.push_str("</span>");
+    out
 }
 
 /// A `<reference>` as HTML: URLs and file: refs open externally; an

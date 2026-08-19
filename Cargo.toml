@@ -1,6 +1,6 @@
 [package]
 name = "hl2web"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Geir Isene <g@isene.com>"]
 description = "Render a HyperList (.hl) as one self-contained interactive HTML page: folding, search, colors per hyperlist.vim."
