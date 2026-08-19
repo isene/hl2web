@@ -55,7 +55,7 @@ a.ref { text-decoration: underline; }
 .hit > summary, .hit.item { background: var(--hit); }
 footer { color: var(--dim); margin-top: 2em; font-size: .8em; }
 b { font-weight: bold; } i { font-style: italic; } u { text-decoration: underline; }
-.cb { cursor: pointer; }
+.cb { cursor: pointer; font-size: 1.35em; line-height: 1; vertical-align: -0.08em; }
 body.light {
   --bg: #fbfaf6; --fg: #222; --dim: #999;
   --op: #0044cc; --prop: #c00000; --qual: #0a7a33;
@@ -269,6 +269,35 @@ fn colon_head_html(text: &str, cls: &str) -> String {
     out
 }
 
+/// An item's text reduced to its reference-matchable key: leading
+/// Starters, State/Transition markers, checkboxes and Identifiers
+/// stripped, lowercased.
+fn match_key(s: &str) -> String {
+    let mut t = s.trim_start();
+    loop {
+        let before = t;
+        for p in ["- ", "+ ", "* ", "S: ", "T: ", "| ", "/ ",
+                  "[_] ", "[ ] ", "[x] ", "[X] ", "[O] "] {
+            if let Some(r) = t.strip_prefix(p) {
+                t = r;
+            }
+        }
+        let id_len = t.chars()
+            .take_while(|c| c.is_ascii_digit() || *c == '.')
+            .count();
+        if id_len > 0
+            && t[..id_len].chars().any(|c| c.is_ascii_digit())
+            && t[id_len..].starts_with(' ')
+        {
+            t = &t[id_len + 1..];
+        }
+        if t == before {
+            break;
+        }
+    }
+    t.to_lowercase()
+}
+
 /// A `<reference>` as HTML: URLs and file: refs open externally; an
 /// item-path ref links to the first item containing its last segment
 /// (never the referencing item itself); unresolved refs stay a span.
@@ -283,7 +312,7 @@ fn ref_html(inner: &str, self_ix: usize, texts: &[String]) -> String {
     let seg = inner.rsplit('/').next().unwrap_or(inner).trim().to_lowercase();
     if !seg.is_empty() {
         if let Some(ix) = texts.iter().enumerate().position(|(i, t)| {
-            i != self_ix && t.contains(&seg)
+            i != self_ix && t.starts_with(&seg)
         }) {
             return format!(
                 "<a class=ref href=\"#i{ix}\" \
@@ -456,8 +485,10 @@ fn main() {
             .unwrap_or_else(|| "HyperList".into());
     }
 
-    // Lowercased item texts, the reference-resolution targets.
-    let texts: Vec<String> = items.iter().map(|it| it.text.to_lowercase()).collect();
+    // Reference-resolution targets: item texts with Starters, checkboxes
+    // and Identifiers stripped, lowercased. A reference matches the START
+    // of an item, never text buried inside one.
+    let texts: Vec<String> = items.iter().map(|it| match_key(&it.text)).collect();
     let mut body = String::new();
     let mut stack: Vec<usize> = Vec::new(); // open <details> levels
     for (i, it) in items.iter().enumerate() {
