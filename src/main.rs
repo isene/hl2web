@@ -291,11 +291,18 @@ fn b64(data: &[u8]) -> String {
 
 /// --graph: render the list with hypergraph and hand back a section
 /// embedding the PNG as a data URI, keeping the page self-contained.
-fn graph_section(path: &str) -> Option<String> {
+/// `opts` holds hypergraph flags ("-t -d -T tech"); default is "-s -l".
+/// Format, output file and overwrite stay fixed: the embed needs them.
+fn graph_section(path: &str, opts: Option<&str>) -> Option<String> {
     let tmp = std::env::temp_dir()
         .join(format!("hl2web-graph-{}.png", std::process::id()));
-    let ok = std::process::Command::new("hypergraph")
-        .args(["-s", "-l", "-f", "png", "-W", "-O"])
+    let mut cmd = std::process::Command::new("hypergraph");
+    match opts {
+        Some(o) => cmd.args(o.split_whitespace()),
+        None => cmd.args(["-s", "-l"]),
+    };
+    let ok = cmd
+        .args(["-f", "png", "-W", "-O"])
         .arg(&tmp)
         .arg(path)
         .stdout(std::process::Stdio::null())
@@ -501,9 +508,11 @@ fn main() {
     if args.first().map(|a| a == "-h" || a == "--help").unwrap_or(false) {
         println!("hl2web — HyperList to one self-contained interactive HTML page");
         println!();
-        println!("Usage: hl2web [--title T] [--graph] file.hl > file.html");
+        println!("Usage: hl2web [--title T] [--graph [\"OPTS\"]] file.hl > file.html");
         println!();
         println!("  --graph   embed a hypergraph PNG at the bottom (needs hypergraph)");
+        println!("            takes optional hypergraph flags: --graph \"-t -d -T tech\"");
+        println!("            default \"-s -l\"; format and output stay fixed");
         return;
     }
     if args.first().map(|a| a == "-v" || a == "--version").unwrap_or(false) {
@@ -511,6 +520,7 @@ fn main() {
         return;
     }
     let mut want_graph = false;
+    let mut graph_opts: Option<String> = None;
     while let Some(a) = args.first() {
         match a.as_str() {
             "--title" => {
@@ -522,6 +532,13 @@ fn main() {
             "--graph" => {
                 args.remove(0);
                 want_graph = true;
+                // An optional value carrying hypergraph flags: anything
+                // dash-led that is not one of our own flags.
+                if let Some(n) = args.first() {
+                    if n.starts_with('-') && n != "--title" && n != "--graph" {
+                        graph_opts = Some(args.remove(0));
+                    }
+                }
             }
             _ => break,
         }
@@ -586,7 +603,7 @@ fn main() {
         body.push_str("</div></details>");
     }
     let graph = if want_graph {
-        graph_section(path).unwrap_or_default()
+        graph_section(path, graph_opts.as_deref()).unwrap_or_default()
     } else {
         String::new()
     };

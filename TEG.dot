@@ -1,0 +1,248 @@
+digraph HyperGraph {
+rankdir=LR
+splines=spline
+bgcolor="white"
+overlap=false
+edge [fontsize=8 len=1 color="black"]
+node [shape=ellipse color="black" fontname="Helvetica"]
+
+"node_0" [label="The Trans-Existential Grounding\nframework; Geir Isene", shape=doubleoctagon, width=0.2 height=0.2]
+"node_1" [label="The framework in one line"]
+"node_2" [label="Existence requires a ground\noutside itself, and that ground\nmust choose"]
+"node_3" [label="The two halves are not held with\nequal confidence, by design"]
+"node_4" [label="The requirement is PROVED"]
+"node_5" [label="The identification is ARGUED, by\nelimination"]
+"node_6" [label="Paper 1: Why Existence Cannot\nGround Itself (Gödelian\nincompleteness and the structure\nof physical law)"]
+"node_7" [label="The lawful structure of\nexistence cannot be\nself-supporting", shape=doubleoctagon, width=0.2 height=0.2]
+"node_8" [label="Definition: Existence (E) =\neverything that has properties"]
+"node_9" [label="Physical entities and their\nlaws; thoughts, concepts,\nnumbers, proofs"]
+"node_10" [label="Deliberately generous; closes\nthe Platonic exit at the start"]
+"node_11" [label="Existence has formal structure"]
+"node_12" [label="Physical law is expressed\nmathematically, and the\nexpression works"]
+"node_13" [label="Newton: arithmetic relations;\nRelativity: differential\ngeometry; Quantum mechanics:\nHilbert spaces"]
+"node_14" [label="Wigner: \"the unreasonable\neffectiveness of mathematics\"\n(he declined to explain it)"]
+"node_15" [label="Regularities survive any change\nof notation; not artefacts of\ndescription"]
+"node_16" [label="The structural argument (two\npremises and a theorem)"]
+"node_17" [label="1 The lawful structure of E\nconstitutes a formal system\ncontaining arithmetic"]
+"node_18" [label="2 E is consistent (empirical;\nevery test we have run supports\nit)"]
+"node_19" [label="The grounding requirement", shape=doubleoctagon, width=0.2 height=0.2]
+"node_20" [label="E cannot establish its own\nconsistency", shape=diamond]
+"node_21" [label="Gödel's second incompleteness\ntheorem, applied to S = the\nlawful structure of E", shape=doubleoctagon, width=0.2 height=0.2]
+"node_22" [label="Any account of E's consistency\nmust appeal to something outside\nE"]
+"node_23" [label="The gap is structural, not\nepistemic; no complete set of\ninternal laws can close it"]
+"node_24" [label="The disjunctive form (grant that\nE merely CONTAINS formal\nsystems)"]
+"node_25" [label="the theorem applies as stated", shape=diamond]
+"node_26" [label="a non-formal substrate reliably\nproduces formal structure, which\nneeds its own account", shape=diamond]
+"node_27" [label="Either way the order is not\nself-accounting"]
+"node_28" [label="The pattern behind the theorem"]
+"node_29" [label="Cantor: no enumeration captures\nall reals"]
+"node_30" [label="Gödel: no consistent system\nproves its own consistency"]
+"node_31" [label="Tarski: no language defines its\nown truth"]
+"node_32" [label="Lawvere: all three are one\ncategorical fact, so ascending\nto richer theories never escapes"]
+"node_33" [label="Three further routes, and what\neach adds"]
+"node_34" [label="The Leibnizian route (sufficient\nreason)"]
+"node_35" [label="Contingent things want reasons;\na reason from inside E is itself\ncontingent"]
+"node_36" [label="The chain terminates only in\nsomething necessary, and nothing\ninside E is necessary"]
+"node_37" [label="The property regress"]
+"node_38" [label="Complex properties reduce to\nsimpler ones, down to\nfundamental constants"]
+"node_39" [label="Ask why THOSE; three exits only"]
+"node_40" [label="1 Terminates in something with\nno properties; outside E by"]
+"node_41" [label="2 Descends forever (then nothing\nis ever actually grounded)"]
+"node_42" [label="3 Stops at properties that\nsimply ARE (brute fact, refusing\nto answer)"]
+"node_43" [label="Pure dependency: properties rest\non other properties whether\nanyone asks; needs neither Gödel\nnor Leibniz"]
+"node_44" [label="The exhaustive why"]
+"node_45" [label="Every answer cites a prior\ncondition; only what needs no\nwhy terminates the chain"]
+"node_46" [label="Sufficient reason carried out as\na procedure; not counted\nseparately"]
+"node_47" [label="What the routes owe each other"]
+"node_48" [label="Three genuinely separate\nstarting points: Gödel, the\nproperty regress, sufficient\nreason"]
+"node_49" [label="Each fixes one constraint on the\nground"]
+"node_50" [label="Gödel: OUTSIDE the system it\ngrounds"]
+"node_51" [label="Sufficient reason: NECESSARY"]
+"node_52" [label="Property regress: PROPERTY-FREE"]
+"node_53" [label="Exhaustive why: NEEDS NO FURTHER\nWHY"]
+"node_54" [label="The constraints turn out jointly\nsatisfiable; that is the\ninteresting fact"]
+"node_55" [label="Why the regress does not\nterminate inside existence"]
+"node_56" [label="Four conditions on any candidate\nground"]
+"node_57" [label="Transcendence; Productive\ncapacity; No determinate\nproperties; Sustains consistency"]
+"node_58" [label="The candidates, and where each\nfails"]
+"node_59" [label="A deity with attributes; fails\non properties (\"why loving\nrather than cruel?\" is the\nfine-structure question again)"]
+"node_60" [label="Platonic forms; fail productive\ncapacity (the number seven does\nnot do anything)"]
+"node_61" [label="The quantum vacuum; fails\ntranscendence (a state of\nquantised fields; calling it\n\"nothing\" is a sleight of\nhand)"]
+"node_62" [label="The multiverse; more of the\nthing to be explained is not an\nexplanation of it"]
+"node_63" [label="Emergence; presupposes parts,\nrelations and laws, exactly what\nneeds grounding"]
+"node_64" [label="A necessary being; maximal\nproperties resume the regress\n(right about the termination,\nwrong to give it a character)"]
+"node_65" [label="Brute fact; always available,\nnever informs; the one move that\nguarantees no progress"]
+"node_66" [label="The pattern in the failures"]
+"node_67" [label="Every candidate is inside E, or\ncarries determinate character\nthat puts it back inside E"]
+"node_68" [label="What survives"]
+"node_69" [label="Constraints, not an\nidentification: outside E,\nproperty-free, able to\nactualise, able to sustain order"]
+"node_70" [label="Naming the ground is the next\nquestion"]
+"node_71" [label="Paper 2: The Ground Must Choose\n(free will as trans-existential\nground)"]
+"node_72" [label="Only unrestricted decision meets\nthe four conditions", shape=doubleoctagon, width=0.2 height=0.2]
+"node_73" [label="The bridge: which of the\navailable possibilities becomes\nactual?"]
+"node_74" [label="Something settles this; call the\nsettling selection"]
+"node_75" [label="Mechanism fails on properties"]
+"node_76" [label="A fixed procedure is a\ndeterminate property; the ground\nlands back inside E"]
+"node_77" [label="A rule-run ground is a formal\nsystem; applies"]
+"node_78" [label="Chance fails on order"]
+"node_79" [label="Structure persists: constants\nhold, chemistry repeats,\nmathematics does not fluctuate"]
+"node_80" [label="Random actualisation gives\ndrift; \"randomness within\nconstraints\" concedes the point\n(constraints are rules)"]
+"node_81" [label="What remains"]
+"node_82" [label="Selection neither forced nor\narbitrary: choice in the minimal\nsense"]
+"node_83" [label="The selection requirement", shape=doubleoctagon, width=0.2 height=0.2]
+"node_84" [label="actualisation is neither\ndeterministic nor random", shape=diamond]
+"node_85" [label="The determinism-or-luck\ndichotomy was never exhaustive;\nthe third option lives outside\nexistence"]
+"node_86" [label="The framework"]
+"node_87" [label="P = pure potential (what has no\nproperties); W = the capacity\nfor unrestricted decision,\nwithin P"]
+"node_88" [label="W and E are disjoint by\nconstruction"]
+"node_89" [label="Actualisation is a map from\ndecisions and moments to\nactualised states of affairs"]
+"node_90" [label="Continuous, not a single\noriginating act; sustaining and\noriginating are one operation"]
+"node_91" [label="Not computable; a computation is\nrule-governed and excludes it"]
+"node_92" [label="E is the IMAGE of actualisation:\nno prior arena, no furniture to\nrearrange"]
+"node_93" [label="Existence emerges from free\nwill; free will does not emerge\nfrom existence"]
+"node_94" [label="Remark: the empty set has no\nmembers, yet the whole\ncumulative hierarchy builds from\nit"]
+"node_95" [label="Indeterminacy is real"]
+"node_96" [label="Classical: no physical state is\nspecified to infinite precision\n(\"pervasive indefiniteness\",\nPotter, Ellis & Mitchell)"]
+"node_97" [label="Quantum: Bell violations,\nloophole-free; local hidden\nvariables excluded"]
+"node_98" [label="Bohm is answered by finite\ninformation; Many-Worlds is\nanswered by the multiverse\nobjection"]
+"node_99" [label="Superdeterminism is again the\nbrute fact"]
+"node_100" [label="Constraint from one's own\nchoices"]
+"node_101" [label="Each actualisation converts\npotential into something\ndefinite, and the definite must\nbe maintained"]
+"node_102" [label="Volitional entropy: accumulated\ncommitment of the actualiser,\nfelt as constraint"]
+"node_103" [label="The chess analogy: the rules\narrived with the decision to\nplay (laws of physics as\nstanding commitments)"]
+"node_104" [label="A long-actualising chooser\nSHOULD feel exactly as\nconstrained as we do"]
+"node_105" [label="Computation cannot choose"]
+"node_106" [label="A deterministic machine is\nmechanism; adding a random\nsource is chance; both are\nexcluded"]
+"node_107" [label="No claim against capability:\nbehaviour is a poor guide to the\npresence of W, and the framework\npredicts that"]
+"node_108" [label="Responsibility"]
+"node_109" [label="Structural, not conventional:\nthe chooser made it actual, so\nthe chooser owns it"]
+"node_110" [label="What this does not establish"]
+"node_111" [label="That human beings possess W (a\nfurther step, flagged as not yet\nmade)"]
+"node_112" [label="The identification is only as\ngood as its enumeration; exhibit\na fourth mode of actualisation\nand it falls"]
+"node_113" [label="Reading the pair"]
+"node_114" [label="Take the requirement (proved)\neven if you decline the\nidentification (argued)"]
+"node_115" [label="you have taken what was\nestablished and declined what\nwas proposed", shape=diamond]
+"node_116" [label="(116)", tooltip="Tags: TEG, freewill, Gödel, grounding"]
+
+"node_0" -> "node_1"
+"node_0" -> "node_3"
+"node_0" -> "node_6"
+"node_0" -> "node_71"
+"node_0" -> "node_113"
+"node_0" -> "node_116"
+"node_1" -> "node_2"
+"node_3" -> "node_4"
+"node_3" -> "node_5"
+"node_4" -> "node_6" [style="dashed"]
+"node_5" -> "node_71" [style="dashed"]
+"node_6" -> "node_7"
+"node_6" -> "node_8"
+"node_6" -> "node_11"
+"node_6" -> "node_16"
+"node_6" -> "node_33"
+"node_6" -> "node_55"
+"node_6" -> "node_68"
+"node_8" -> "node_9"
+"node_8" -> "node_10"
+"node_11" -> "node_12"
+"node_11" -> "node_14"
+"node_11" -> "node_15"
+"node_12" -> "node_13"
+"node_16" -> "node_17"
+"node_16" -> "node_18"
+"node_16" -> "node_19"
+"node_16" -> "node_24"
+"node_16" -> "node_28"
+"node_19" -> "node_20"
+"node_19" -> "node_21"
+"node_19" -> "node_22"
+"node_19" -> "node_23"
+"node_24" -> "node_25"
+"node_24" -> "node_26"
+"node_24" -> "node_27"
+"node_28" -> "node_29"
+"node_28" -> "node_30"
+"node_28" -> "node_31"
+"node_28" -> "node_32"
+"node_33" -> "node_34"
+"node_33" -> "node_37"
+"node_33" -> "node_44"
+"node_33" -> "node_47"
+"node_34" -> "node_35"
+"node_34" -> "node_36"
+"node_37" -> "node_38"
+"node_37" -> "node_39"
+"node_37" -> "node_43"
+"node_39" -> "node_40"
+"node_39" -> "node_41"
+"node_39" -> "node_42"
+"node_40" -> "node_8" [style="dashed"]
+"node_44" -> "node_45"
+"node_44" -> "node_46"
+"node_47" -> "node_48"
+"node_47" -> "node_49"
+"node_47" -> "node_54"
+"node_49" -> "node_50"
+"node_49" -> "node_51"
+"node_49" -> "node_52"
+"node_49" -> "node_53"
+"node_55" -> "node_56"
+"node_55" -> "node_58"
+"node_55" -> "node_66"
+"node_56" -> "node_57"
+"node_58" -> "node_59"
+"node_58" -> "node_60"
+"node_58" -> "node_61"
+"node_58" -> "node_62"
+"node_58" -> "node_63"
+"node_58" -> "node_64"
+"node_58" -> "node_65"
+"node_66" -> "node_67"
+"node_68" -> "node_69"
+"node_68" -> "node_70"
+"node_70" -> "node_71" [style="dashed"]
+"node_71" -> "node_72"
+"node_71" -> "node_73"
+"node_71" -> "node_86"
+"node_71" -> "node_95"
+"node_71" -> "node_100"
+"node_71" -> "node_105"
+"node_71" -> "node_108"
+"node_71" -> "node_110"
+"node_73" -> "node_74"
+"node_73" -> "node_75"
+"node_73" -> "node_78"
+"node_73" -> "node_81"
+"node_75" -> "node_76"
+"node_75" -> "node_77"
+"node_77" -> "node_16" [style="dashed"]
+"node_78" -> "node_79"
+"node_78" -> "node_80"
+"node_81" -> "node_82"
+"node_81" -> "node_83"
+"node_83" -> "node_84"
+"node_83" -> "node_85"
+"node_86" -> "node_87"
+"node_86" -> "node_88"
+"node_86" -> "node_89"
+"node_86" -> "node_94"
+"node_89" -> "node_90"
+"node_89" -> "node_91"
+"node_89" -> "node_92"
+"node_89" -> "node_93"
+"node_95" -> "node_96"
+"node_95" -> "node_97"
+"node_95" -> "node_98"
+"node_95" -> "node_99"
+"node_100" -> "node_101"
+"node_100" -> "node_102"
+"node_100" -> "node_103"
+"node_100" -> "node_104"
+"node_105" -> "node_106"
+"node_105" -> "node_107"
+"node_108" -> "node_109"
+"node_110" -> "node_111"
+"node_110" -> "node_112"
+"node_113" -> "node_114"
+"node_113" -> "node_115"
+}

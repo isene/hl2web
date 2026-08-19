@@ -49,6 +49,14 @@ JavaScript disabled (native details/summary).
 the bottom of the page as a data URI, so the file stays self-contained.
 Skipped with a warning when hypergraph is not installed.
 
+It takes an optional quoted string of hypergraph flags (direction, edge
+type, theme, separation); the default is `-s -l`. Format and output file
+stay fixed, since the embed needs a PNG:
+
+```sh
+hl2web --graph "-t -d -T tech" file.hl > file.html
+```
+
 ## What the page gives you
 
 - Native folding: click any parent, or the 1/2/3/4/all/none buttons
