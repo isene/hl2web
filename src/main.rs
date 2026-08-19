@@ -7,6 +7,7 @@
 //!
 //!     hl2web file.hl > file.html
 //!     hl2web --title "My List" file.hl > file.html
+//!     hl2web --graph file.hl > file.html   (embeds a hypergraph PNG)
 
 use std::fmt::Write as _;
 
@@ -54,6 +55,8 @@ a.ref { text-decoration: underline; }
 .hidden { display: none; }
 .hit > summary, .hit.item { background: var(--hit); }
 footer { color: var(--dim); margin-top: 2em; font-size: .8em; }
+.graph { margin-top: 2em; }
+.graph img { max-width: 100%; height: auto; background: #fff; border-radius: 6px; }
 b { font-weight: bold; } i { font-style: italic; } u { text-decoration: underline; }
 .cb { cursor: pointer; font-size: 1.55em; font-weight: bold; line-height: 1; vertical-align: -0.1em; }
 body.light {
@@ -270,6 +273,50 @@ fn colon_head_html(text: &str, cls: &str) -> String {
     out
 }
 
+const B64: &[u8; 64] =
+    b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+
+fn b64(data: &[u8]) -> String {
+    let mut out = String::with_capacity(data.len() * 4 / 3 + 4);
+    for c in data.chunks(3) {
+        let b = [c[0], *c.get(1).unwrap_or(&0), *c.get(2).unwrap_or(&0)];
+        let n = ((b[0] as u32) << 16) | ((b[1] as u32) << 8) | b[2] as u32;
+        out.push(B64[(n >> 18) as usize & 63] as char);
+        out.push(B64[(n >> 12) as usize & 63] as char);
+        out.push(if c.len() > 1 { B64[(n >> 6) as usize & 63] as char } else { '=' });
+        out.push(if c.len() > 2 { B64[n as usize & 63] as char } else { '=' });
+    }
+    out
+}
+
+/// --graph: render the list with hypergraph and hand back a section
+/// embedding the PNG as a data URI, keeping the page self-contained.
+fn graph_section(path: &str) -> Option<String> {
+    let tmp = std::env::temp_dir()
+        .join(format!("hl2web-graph-{}.png", std::process::id()));
+    let ok = std::process::Command::new("hypergraph")
+        .args(["-s", "-l", "-f", "png", "-W", "-O"])
+        .arg(&tmp)
+        .arg(path)
+        .stdout(std::process::Stdio::null())
+        .stderr(std::process::Stdio::null())
+        .status()
+        .map(|s| s.success())
+        .unwrap_or(false);
+    if !ok {
+        eprintln!("hl2web: hypergraph failed or is not installed; skipping --graph");
+        return None;
+    }
+    let data = std::fs::read(&tmp).ok()?;
+    let _ = std::fs::remove_file(&tmp);
+    Some(format!(
+        "<details class=graph open><summary>Graph</summary>\
+         <img alt=\"hypergraph of this HyperList\" \
+         src=\"data:image/png;base64,{}\"></details>",
+        b64(&data)
+    ))
+}
+
 /// An item's text reduced to its reference-matchable key: leading
 /// Starters, State/Transition markers, checkboxes and Identifiers
 /// stripped, lowercased.
@@ -454,21 +501,33 @@ fn main() {
     if args.first().map(|a| a == "-h" || a == "--help").unwrap_or(false) {
         println!("hl2web — HyperList to one self-contained interactive HTML page");
         println!();
-        println!("Usage: hl2web [--title T] file.hl > file.html");
+        println!("Usage: hl2web [--title T] [--graph] file.hl > file.html");
+        println!();
+        println!("  --graph   embed a hypergraph PNG at the bottom (needs hypergraph)");
         return;
     }
     if args.first().map(|a| a == "-v" || a == "--version").unwrap_or(false) {
         println!("hl2web {}", VERSION);
         return;
     }
-    if args.first().map(|a| a == "--title").unwrap_or(false) {
-        args.remove(0);
-        if !args.is_empty() {
-            title = args.remove(0);
+    let mut want_graph = false;
+    while let Some(a) = args.first() {
+        match a.as_str() {
+            "--title" => {
+                args.remove(0);
+                if !args.is_empty() {
+                    title = args.remove(0);
+                }
+            }
+            "--graph" => {
+                args.remove(0);
+                want_graph = true;
+            }
+            _ => break,
         }
     }
     let Some(path) = args.first() else {
-        eprintln!("usage: hl2web [--title T] file.hl > file.html");
+        eprintln!("usage: hl2web [--title T] [--graph] file.hl > file.html");
         std::process::exit(2);
     };
     let src = match std::fs::read_to_string(path) {
@@ -526,6 +585,11 @@ fn main() {
     for _ in stack {
         body.push_str("</div></details>");
     }
+    let graph = if want_graph {
+        graph_section(path).unwrap_or_default()
+    } else {
+        String::new()
+    };
 
     println!(
         "<!doctype html><html><head><meta charset=utf-8>\
@@ -537,10 +601,10 @@ fn main() {
          <button onclick=level(3)>3</button><button onclick=level(4)>4</button>\
          <button onclick=level(-1)>all</button><button onclick=level(0)>none</button>\
          <button onclick=theme() title=\"light / dark\">☾☀</button>\
-         </header><div id=root>{body}</div>\
+         </header><div id=root>{body}</div>{graph}\
          <footer>rendered by hl2web {v} — <a class=ref \
          href=\"https://isene.org/hyperlist/\">HyperList</a></footer>\
          <script>{js}</script></body></html>",
-        t = esc(&title), css = CSS, body = body, js = JS, v = VERSION
+        t = esc(&title), css = CSS, body = body, graph = graph, js = JS, v = VERSION
     );
 }

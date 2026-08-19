@@ -33,10 +33,16 @@ See it live: [isene.com/freewill/TEG.html](https://isene.com/freewill/TEG.html)
 ```sh
 hl2web file.hl > file.html
 hl2web --title "My List" file.hl > file.html
+hl2web --graph file.hl > file.html
 ```
 
 Open the HTML anywhere, phone included. Folding works even with
 JavaScript disabled (native details/summary).
+
+`--graph` renders the list with
+[hypergraph](https://github.com/isene/hypergraph) and embeds the PNG at
+the bottom of the page as a data URI, so the file stays self-contained.
+Skipped with a warning when hypergraph is not installed.
 
 ## What the page gives you
 
