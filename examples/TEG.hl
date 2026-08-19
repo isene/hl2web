@@ -2,8 +2,8 @@ TEG: The Trans-Existential Grounding framework; Geir Isene <https://isene.com/fr
 	The framework in one line
 		Existence requires a ground outside itself, and that ground must choose
 	The two halves are not held with equal confidence, by design
-		The requirement is PROVED <THEOREM: The grounding requirement>
-		The identification is ARGUED, by elimination <THEOREM: The selection requirement>
+		The requirement is PROVED <Paper 1: Why Existence Cannot Ground Itself>
+		The identification is ARGUED, by elimination <Paper 2: The Ground Must Choose>
 	Paper 1: Why Existence Cannot Ground Itself (Gödelian incompleteness and the structure of physical law)
 		CLAIM: The lawful structure of existence cannot be self-supporting
 		Definition: Existence (E) = everything that has properties

@@ -77,7 +77,8 @@ function cb(ev,el){ev.preventDefault();ev.stopPropagation();
 function go(id){var e=document.getElementById(id);if(!e)return;
   var p=e.parentElement;
   while(p&&p.id!=='root'){if(p.tagName==='DETAILS')p.open=true;p=p.parentElement;}
-  e.scrollIntoView({block:'center'});
+  var t=(e.tagName==='DETAILS')?e.querySelector('summary'):e;
+  t.scrollIntoView({block:'center'});
   e.classList.add('hit');setTimeout(function(){e.classList.remove('hit');},1500);}
 function theme(){document.body.classList.toggle('light');
   try{localStorage.setItem('hl2web-theme',
