@@ -55,7 +55,7 @@ a.ref { text-decoration: underline; }
 .hit > summary, .hit.item { background: var(--hit); }
 footer { color: var(--dim); margin-top: 2em; font-size: .8em; }
 b { font-weight: bold; } i { font-style: italic; } u { text-decoration: underline; }
-.cb { cursor: pointer; font-size: 1.35em; line-height: 1; vertical-align: -0.08em; }
+.cb { cursor: pointer; font-size: 1.55em; font-weight: bold; line-height: 1; vertical-align: -0.1em; }
 body.light {
   --bg: #fbfaf6; --fg: #222; --dim: #999;
   --op: #0044cc; --prop: #c00000; --qual: #0a7a33;
