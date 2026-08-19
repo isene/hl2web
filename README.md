@@ -1,6 +1,6 @@
 # hl2web
 
-![Rust](https://img.shields.io/badge/language-Rust-orange) ![Unlicense](https://img.shields.io/badge/license-Unlicense-green)
+![Rust](https://img.shields.io/badge/language-Rust-orange) ![Release](https://badgen.net/github/release/isene/hl2web) ![Unlicense](https://img.shields.io/badge/license-Unlicense-green) [![Fe2O3](https://img.shields.io/badge/suite-Fe%E2%82%82O%E2%82%83-b7410e)](https://github.com/isene/fe2o3)
 
 Render a [HyperList](https://isene.org/hyperlist/) as one self-contained
 interactive HTML page. No frameworks, no external assets, nothing to
@@ -25,6 +25,8 @@ from one paper's claim to the other's theorem, search for an objection.
 ```sh
 hl2web --title "TEG" examples/TEG.hl > TEG.html
 ```
+
+See it live: [isene.com/freewill/TEG.html](https://isene.com/freewill/TEG.html)
 
 ## Usage
 
