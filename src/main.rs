@@ -114,10 +114,30 @@ struct Item {
     literal: bool,
 }
 
+/// Spaces per level, measured from the file itself. HyperList is written
+/// with tabs, but plenty of lists in the wild use 2, 3 or 4 spaces, and
+/// guessing one of them flattens the others into a two-level list.
+/// The smallest indent that occurs is the step.
+fn indent_unit(src: &str) -> usize {
+    let mut unit = 0;
+    for line in src.lines() {
+        if line.starts_with('\t') || line.trim().is_empty() {
+            continue;
+        }
+        let n = line.len() - line.trim_start_matches(' ').len();
+        if n > 0 && (unit == 0 || n < unit) {
+            unit = n;
+        }
+    }
+    if unit == 0 { 3 } else { unit }
+}
+
 fn parse(src: &str) -> Vec<Item> {
     let mut out = Vec::new();
     let mut lit = false;
     let mut lit_level = 0;
+    let unit = indent_unit(src);
+    let step: String = " ".repeat(unit);
     for raw in src.lines() {
         let line = raw.trim_end();
         if line.trim().is_empty() {
@@ -129,8 +149,8 @@ fn parse(src: &str) -> Vec<Item> {
             if let Some(r) = rest.strip_prefix('\t') {
                 level += 1;
                 rest = r;
-            } else if let Some(r) = rest.strip_prefix("   ") {
-                level += 1; // the spec's examples indent with 3 spaces
+            } else if let Some(r) = rest.strip_prefix(step.as_str()) {
+                level += 1;
                 rest = r;
             } else {
                 break;

@@ -41,7 +41,8 @@ hl2web --title "My List" file.hl > file.html
 hl2web --graph file.hl > file.html
 ```
 
-Open the HTML anywhere, phone included. Folding works even with
+Indentation is read from the file: tabs, or whatever space step it uses
+(2, 3 or 4). Open the HTML anywhere, phone included. Folding works even with
 JavaScript disabled (native details/summary).
 
 `--graph` renders the list with
