@@ -606,8 +606,11 @@ fn main() {
         if has_kids {
             let _ = write!(
                 body,
-                "<details class=node data-l={} data-t=\"{}\" id=i{}>\
+                "<details class=node{} data-l={} data-t=\"{}\" id=i{}>\
                  <summary>{}</summary><div class=kids>",
+                // The top level opens, so the page shows its shape at a
+                // glance. A fully folded page is one line and a mystery.
+                if it.level == 0 { " open" } else { "" },
                 it.level, esc(&plain), i, line
             );
             stack.push(it.level);
